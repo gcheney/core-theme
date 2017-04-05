@@ -547,14 +547,19 @@
                 // #73389 only refresh if the payment requirement has changed after adding a store credit.
                 var activePayments = this.activePayments();
                 var hasNonStoreCreditPayment = (_.filter(activePayments, function (item) { return item.paymentType !== 'StoreCredit'; })).length > 0;
-                if ((order.get('amountRemainingForPayment') >= 0 && !hasNonStoreCreditPayment) ||
-                    (order.get('amountRemainingForPayment') < 0 && hasNonStoreCreditPayment)
+                if ((self.nonStoreCreditTotal() < 0 && hasNonStoreCreditPayment)
                     ) {
                     order.get('billingInfo').clear();
                     order.set(updatedOrder, { silent: true });
+                } else {
+                    var savedCardId = self.get('card.paymentServiceCardId'),
+                    savedPaymentType = self.get('paymentType');
+
+                    self.set('savedPaymentMethodId', savedCardId, { silent: true });
+                    self.setSavedPaymentMethod(savedCardId);
+
+                    self.setDefaultPaymentType(self);
                 }
-                self.setPurchaseOrderInfo();
-                self.setDefaultPaymentType(self);
                 self.trigger('orderPayment', updatedOrder, self);
 
             },
@@ -605,8 +610,17 @@
                         if (creditAmountToApply === 0) {
                             return order.apiVoidPayment(sameCreditPayment.id).then(function(o) {
                                 order.set(o.data);
+
                                 self.setPurchaseOrderInfo();
+
+                                var savedCardId = self.get('card.paymentServiceCardId'),
+                                savedPaymentType = self.get('paymentType');
+
+                                self.set('savedPaymentMethodId', savedCardId, { silent: true });
+                                self.setSavedPaymentMethod(savedCardId);
+                                
                                 self.setDefaultPaymentType(self);
+                                
                                 self.trigger('orderPayment', o.data, self);
                                 return o;
                             });
@@ -620,7 +634,7 @@
                             }
                             return order.apiVoidPayment(sameCreditPayment.id).then(function (o) {
                                 order.set(o.data);
-                                
+
                                 return order.apiAddStoreCredit({
                                     storeCreditCode: creditCode,
                                     amount: creditAmountToApply

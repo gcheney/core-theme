@@ -5,7 +5,7 @@
 <div class="mz-formstep-body">
     <div class="mz-formstep-summary mz-l-stack">
         {% for payment in model.activePayments %}
-        {% if payment.billingInfo.paymentType == "StoreCredit" %}
+        {% if payment.billingInfo.paymentType == "StoreCredit" and model.nonStoreCreditTotal == 0 %}
         <h4 class="mz-checkout-nopaymentrequired mz-checkoutform">{{ labels.noPaymentRequired|string_format(model.remainingTotal|currency) }}</h4>
         {% endif %}
         {% if payment.billingInfo.paymentType == "Check" and model.nonStoreCreditTotal > 0 %}
@@ -84,8 +84,12 @@
 
     <div class="mz-formstep-fields mz-l-stack">
       
-        {% if model.nonStoreCreditTotal > 0 %}
+        {% if model.nonStoreCreditTotal == 0 %}
 
+            <h4 class="mz-checkout-nopaymentrequired mz-checkoutform">{{ labels.noPaymentRequired|string_format(model.remainingTotal|currency) }}</h4>
+            
+        {% else %}
+        
             {% if model.hasSavedCardPayment %}
       
                 {% if editing.savedCard %}
@@ -129,9 +133,7 @@
                     {% include "modules/checkout/payment-selector" %}
                 </div>
             {% endif %}
-        {% else %}
-        
-            <h4 class="mz-checkout-nopaymentrequired mz-checkoutform">{{ labels.noPaymentRequired|string_format(model.remainingTotal|currency) }}</h4>
+       
 
         {% endif %}
 
