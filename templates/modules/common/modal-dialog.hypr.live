@@ -1,0 +1,14 @@
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+</div>
+<div class="modal-body">
+  modal body
+</div>
+<div class="modal-footer">
+<button type="button" class="mz-button" data-dismiss="modal">Close</button>
+<button type="button" class="mz-button">Save changes</button>
+</div>
+</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
