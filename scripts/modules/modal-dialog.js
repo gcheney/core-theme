@@ -57,7 +57,8 @@ define(['modules/jquery-mozu', 'shim!vendor/bootstrap/js/modal[jquery=jQuery]'],
 
 
      if(!elementId || (!header && !title && !body)){
-       //return an error
+       //error
+	console.log("Modal dialog needs elementId and header, title, or body in the options passed.");
      } else {
        var theElement = $('#'+elementId);
 
