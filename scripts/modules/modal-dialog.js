@@ -10,7 +10,7 @@ define(['modules/jquery-mozu', 'shim!vendor/bootstrap/js/modal[jquery=jQuery]'],
    /*For this modal to function, you must pass it  an options object that has
    AT LEAST:
    -elementId: id of element to turn into a modal
-   		-This element should {% include 'modules/common/modal-dialog' %}, or 
+   		-This element should {% include 'modules/common/modal-dialog' %}, or
    		an element that extends the above template,
      	or the creator should be familiar with the components of a bootstrap modal.
      	It should also have the class "modal" for css purposes
@@ -31,7 +31,7 @@ define(['modules/jquery-mozu', 'shim!vendor/bootstrap/js/modal[jquery=jQuery]'],
      //If true, Prepends content in the .modal-footer div.
      var elementId = options.elementId || null;
      //**Necessary: id of element to turn into a modal.
-     
+
      var hasXButton = options.hasXButton || true;
      //Puts an x button in the top right corner that will close the dialog.
      var hasCloseButton = options.hasCloseButton || false;
